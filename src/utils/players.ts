@@ -33,23 +33,23 @@ const get321TvPlaylistUrl = (
  */
 export const getMoviePlayers = (id: string | number, startAt?: number): PlayersProps[] => {
   return [
-   // {
-  //    title: "321 Player",
-  //    source: get321MoviePlaylistUrl(id),
-  //    mode: "playlist_json",
-  //    recommended: true,
-   //   fast: true,
-   //   ads: false,
-    //  resumable: true,
-   // },
     {
-     title: "FMoviez",
-     source: `https://fmoviez.online/embed/movie/${id}${startAt ? `&startAt=${startAt}` : ""}`,
+      title: "321 Player",
+      source: get321MoviePlaylistUrl(id),
+      mode: "playlist_json",
       recommended: true,
       fast: true,
-      ads: true,
-     resumable: true,
-   },
+      ads: false,
+      resumable: true,
+    },
+    //{
+   //  title: "FMoviez",
+   //  source: `https://fmoviez.online/embed/movie/${id}${startAt ? `&startAt=${startAt}` : ""}`,
+   //   recommended: true,
+     // fast: true,
+    //  ads: true,
+    // resumable: true,
+  // },
     {
       title: "VidLink",
       source: `https://vidlink.pro/movie/${id}?player=jw&primaryColor=006fee&secondaryColor=a2a2a2&iconColor=eefdec&autoplay=false&startAt=${startAt || ""}`,
@@ -166,23 +166,23 @@ export const getTvShowPlayers = (
   startAt?: number,
 ): PlayersProps[] => {
   return [
-   // {
-     // title: "321 Player",
-     // source: get321TvPlaylistUrl(id, season, episode),
-     // mode: "playlist_json",
-     // recommended: true,
-     // fast: true,
-     // ads: false,
-    //  resumable: true,
-  //  },
     {
-      title: "FMoviez",
-      source: `https://fmoviez.online/embed/tv/${id}/${season}/${episode}${startAt ? `&startAt=${startAt}` : ""}`,
-      recommended: true,
+      title: "321 Player",
+     source: get321TvPlaylistUrl(id, season, episode),
+     mode: "playlist_json",
+     recommended: true,
       fast: true,
-      ads: true,
+      ads: false,
       resumable: true,
     },
+   // {
+   //   title: "FMoviez",
+   //   source: `https://fmoviez.online/embed/tv/${id}/${season}/${episode}${startAt ? `&startAt=${startAt}` : ""}`,
+   //   recommended: true,
+   //   fast: true,
+   //   ads: true,
+   //   resumable: true,
+  //  },
     {
       title: "VidLink",
       source: `https://vidlink.pro/tv/${id}/${season}/${episode}?player=jw&primaryColor=f5a524&secondaryColor=a2a2a2&iconColor=eefdec&autoplay=false&startAt=${startAt || ""}`,
