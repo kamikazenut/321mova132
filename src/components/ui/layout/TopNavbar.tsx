@@ -14,6 +14,7 @@ import SearchInput from "../input/SearchInput";
 import ThemeSwitchDropdown from "../input/ThemeSwitchDropdown";
 import BrandLogo from "../other/BrandLogo";
 import { FaDiscord } from "react-icons/fa6";
+import RandomButton from "../button/RandomButton";
 
 const TopNavbar = () => {
   const pathName = usePathname();
@@ -62,6 +63,7 @@ const TopNavbar = () => {
       <NavbarContent justify="end" className="min-w-0">
         <NavbarItem className="flex gap-1 max-[380px]:gap-0.5">
           <ThemeSwitchDropdown />
+          <RandomButton />
           <IconButton
             tooltip="Discord"
             tooltipProps={{ placement: "left" }}

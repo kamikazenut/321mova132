@@ -16,6 +16,7 @@ import { isPremiumUser } from "@/utils/billing/premium";
 const AdsWarning = dynamic(() => import("@/components/ui/overlay/AdsWarning"));
 const PlayerAccessNotice = dynamic(() => import("@/components/ui/overlay/PlayerAccessNotice"));
 const HlsJsonPlayer = dynamic(() => import("@/components/ui/player/HlsJsonPlayer"));
+const NetflixPlayer = dynamic(() => import("@/components/ui/player/NetflixPlayer"));
 const MoviePlayerHeader = dynamic(() => import("./Header"));
 const MoviePlayerSourceSelection = dynamic(() => import("./SourceSelection"));
 
@@ -52,7 +53,9 @@ const MoviePlayer: React.FC<MoviePlayerProps> = ({ movie, startAt }) => {
   const players = useMemo(() => {
     if (canUse321Player) return allPlayers;
 
-    const filteredPlayers = allPlayers.filter((player) => player.mode !== "playlist_json");
+    const filteredPlayers = allPlayers.filter(
+      (player) => player.mode !== "playlist_json" && player.mode !== "native_hls",
+    );
     return filteredPlayers.length > 0 ? filteredPlayers : allPlayers;
   }, [allPlayers, canUse321Player]);
   const [dismissedPlayerNotice, setDismissedPlayerNotice] = useState(false);
@@ -82,6 +85,8 @@ const MoviePlayer: React.FC<MoviePlayerProps> = ({ movie, startAt }) => {
 
   const PLAYER = useMemo(() => players[selectedSource] || players[0], [players, selectedSource]);
   const isPlaylistJsonPlayer = PLAYER.mode === "playlist_json";
+  const isNativeHlsPlayer = PLAYER.mode === "native_hls";
+  const showServerButton = isPlaylistJsonPlayer || isNativeHlsPlayer;
   const handlePrimaryPlayerError = useCallback(() => {
     const fallbackIndex = players.findIndex((_, index) => index > selectedSource);
     if (fallbackIndex < 0) return;
@@ -105,8 +110,8 @@ const MoviePlayer: React.FC<MoviePlayerProps> = ({ movie, startAt }) => {
           id={movie.id}
           movieName={title}
           onOpenSource={handlers.open}
-          onOpenServer={isPlaylistJsonPlayer ? handleOpenStreamSourceMenu : undefined}
-          showServerButton={isPlaylistJsonPlayer}
+          onOpenServer={showServerButton ? handleOpenStreamSourceMenu : undefined}
+          showServerButton={showServerButton}
           hidden={idle && !mobile}
         />
         <Card shadow="md" radius="none" className="relative h-screen overflow-hidden">
@@ -123,6 +128,17 @@ const MoviePlayer: React.FC<MoviePlayerProps> = ({ movie, startAt }) => {
                 onFatalError={handlePrimaryPlayerError}
                 className="absolute inset-0 z-10 h-full w-full"
                 showFloatingSourceButton={false}
+                openSourceMenuSignal={streamSourceMenuSignal}
+              />
+            ) : PLAYER.mode === "native_hls" ? (
+              <NetflixPlayer
+                key={PLAYER.source}
+                playlistUrl={PLAYER.source}
+                mediaId={movie.id}
+                mediaType="movie"
+                startAt={startAt}
+                onFatalError={handlePrimaryPlayerError}
+                className="absolute inset-0 z-10 h-full w-full"
                 openSourceMenuSignal={streamSourceMenuSignal}
               />
             ) : (

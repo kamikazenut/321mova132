@@ -16,16 +16,19 @@ import { getLoadingLabel } from "@/utils/movies";
 
 const MovieDiscoverList = () => {
   const { ref, inViewport } = useInViewport();
-  const { genresString, queryType } = useDiscoverFilters();
+  const { genresString, queryType, sortBy, year, minRating } = useDiscoverFilters();
 
   const { data, isPending, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
     useInfiniteQuery({
-      queryKey: ["discover-movies", queryType, genresString],
+      queryKey: ["discover-movies", queryType, genresString, sortBy, year, minRating],
       queryFn: ({ pageParam }) =>
         useFetchDiscoverMovies({
           page: pageParam,
           type: queryType as DiscoverMoviesFetchQueryType,
           genres: genresString,
+          sortBy,
+          year,
+          minRating,
         }),
       initialPageParam: 1,
       getNextPageParam: (lastPage) =>

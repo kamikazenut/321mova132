@@ -16,6 +16,7 @@ import { isPremiumUser } from "@/utils/billing/premium";
 const AdsWarning = dynamic(() => import("@/components/ui/overlay/AdsWarning"));
 const PlayerAccessNotice = dynamic(() => import("@/components/ui/overlay/PlayerAccessNotice"));
 const HlsJsonPlayer = dynamic(() => import("@/components/ui/player/HlsJsonPlayer"));
+const NetflixPlayer = dynamic(() => import("@/components/ui/player/NetflixPlayer"));
 const TvShowPlayerHeader = dynamic(() => import("./Header"));
 const TvShowPlayerSourceSelection = dynamic(() => import("./SourceSelection"));
 const TvShowPlayerEpisodeSelection = dynamic(() => import("./EpisodeSelection"));
@@ -81,7 +82,9 @@ const TvShowPlayer: React.FC<TvShowPlayerProps> = ({
   const players = useMemo(() => {
     if (canUse321Player) return allPlayers;
 
-    const filteredPlayers = allPlayers.filter((player) => player.mode !== "playlist_json");
+    const filteredPlayers = allPlayers.filter(
+      (player) => player.mode !== "playlist_json" && player.mode !== "native_hls",
+    );
     return filteredPlayers.length > 0 ? filteredPlayers : allPlayers;
   }, [allPlayers, canUse321Player]);
   const [dismissedPlayerNotice, setDismissedPlayerNotice] = useState(false);
@@ -234,6 +237,8 @@ const TvShowPlayer: React.FC<TvShowPlayerProps> = ({
 
   const PLAYER = useMemo(() => players[selectedSource] || players[0], [players, selectedSource]);
   const isPlaylistJsonPlayer = PLAYER.mode === "playlist_json";
+  const isNativeHlsPlayer = PLAYER.mode === "native_hls";
+  const showServerButton = isPlaylistJsonPlayer || isNativeHlsPlayer;
   const handlePrimaryPlayerError = useCallback(() => {
     const fallbackIndex = players.findIndex((_, index) => index > selectedSource);
     if (fallbackIndex < 0) return;
@@ -259,8 +264,8 @@ const TvShowPlayer: React.FC<TvShowPlayerProps> = ({
           hidden={idle && !mobile}
           selectedSource={selectedSource}
           onOpenSource={sourceHandlers.open}
-          onOpenServer={isPlaylistJsonPlayer ? handleOpenStreamSourceMenu : undefined}
-          showServerButton={isPlaylistJsonPlayer}
+          onOpenServer={showServerButton ? handleOpenStreamSourceMenu : undefined}
+          showServerButton={showServerButton}
           onOpenEpisode={episodeHandlers.open}
           {...props}
         />
@@ -281,6 +286,19 @@ const TvShowPlayer: React.FC<TvShowPlayerProps> = ({
                 onFatalError={handlePrimaryPlayerError}
                 className="absolute inset-0 z-10 h-full w-full"
                 showFloatingSourceButton={false}
+                openSourceMenuSignal={streamSourceMenuSignal}
+              />
+            ) : PLAYER.mode === "native_hls" ? (
+              <NetflixPlayer
+                key={PLAYER.source}
+                playlistUrl={PLAYER.source}
+                mediaId={id}
+                mediaType="tv"
+                season={episode.season_number}
+                episode={episode.episode_number}
+                startAt={startAt}
+                onFatalError={handlePrimaryPlayerError}
+                className="absolute inset-0 z-10 h-full w-full"
                 openSourceMenuSignal={streamSourceMenuSignal}
               />
             ) : (

@@ -1,8 +1,8 @@
 import { queryClient as q } from "@/app/providers";
 import { siteConfig } from "@/config/site";
-import { DISCOVER_MOVIES_VALID_QUERY_TYPES, DISCOVER_TVS_VALID_QUERY_TYPES } from "@/types/movie";
+import { DISCOVER_MOVIES_VALID_QUERY_TYPES, DISCOVER_TVS_VALID_QUERY_TYPES, DISCOVER_SORT_OPTIONS, DiscoverSortOption } from "@/types/movie";
 import { parseAsSet } from "@/utils/parsers";
-import { useQueryState, parseAsStringLiteral } from "nuqs";
+import { useQueryState, parseAsStringLiteral, parseAsInteger } from "nuqs";
 import { useCallback, useMemo, useEffect } from "react";
 
 const VALID_CONTENT_TYPES = ["movie", "tv"] as const;
@@ -23,6 +23,14 @@ const useDiscoverFilters = () => {
     "content",
     parseAsStringLiteral(VALID_CONTENT_TYPES).withDefault("movie"),
   );
+
+  const sortValues = DISCOVER_SORT_OPTIONS.map((o) => o.value) as DiscoverSortOption[];
+  const [sortBy, setSortBy] = useQueryState(
+    "sort",
+    parseAsStringLiteral(sortValues).withDefault("popularity.desc" as DiscoverSortOption),
+  );
+  const [year, setYear] = useQueryState("year", parseAsInteger.withDefault(0));
+  const [minRating, setMinRating] = useQueryState("rating", parseAsInteger.withDefault(0));
 
   const types = useMemo(
     () => [
@@ -46,7 +54,10 @@ const useDiscoverFilters = () => {
   const resetFilters = useCallback(() => {
     setGenres(null);
     setQueryType(DEFAULT_QUERY_TYPE);
-  }, [setGenres, setQueryType]);
+    setSortBy(null);
+    setYear(null);
+    setMinRating(null);
+  }, [setGenres, setQueryType, setSortBy, setYear, setMinRating]);
 
   const clearQueries = useCallback(() => {
     const queryKeys = ["discover-movies", "discover-tv-shows"];
@@ -59,7 +70,7 @@ const useDiscoverFilters = () => {
 
   useEffect(() => {
     clearQueries();
-  }, [content, queryType, genresString]);
+  }, [content, queryType, genresString, sortBy, year, minRating]);
 
   return {
     types,
@@ -67,9 +78,15 @@ const useDiscoverFilters = () => {
     queryType,
     content,
     genresString,
+    sortBy,
+    year,
+    minRating,
     setGenres,
     setQueryType,
     setContent,
+    setSortBy,
+    setYear,
+    setMinRating,
     resetFilters,
   };
 };

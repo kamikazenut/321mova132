@@ -37,3 +37,13 @@ export const DISCOVER_TVS_VALID_QUERY_TYPES = [
 ] as const;
 
 export type DiscoverTvShowsFetchQueryType = (typeof DISCOVER_TVS_VALID_QUERY_TYPES)[number];
+
+export const DISCOVER_SORT_OPTIONS = [
+  { value: "popularity.desc", label: "Most Popular" },
+  { value: "vote_average.desc", label: "Highest Rated" },
+  { value: "vote_count.desc", label: "Most Voted" },
+  { value: "release_date.desc", label: "Newest First" },
+  { value: "release_date.asc", label: "Oldest First" },
+] as const;
+
+export type DiscoverSortOption = (typeof DISCOVER_SORT_OPTIONS)[number]["value"];
